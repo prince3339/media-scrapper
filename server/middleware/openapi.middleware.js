@@ -1,4 +1,6 @@
 const OpenApiValidator = require('express-openapi-validator');
+const basicAuthUsername = process.env.USERNAME;
+const basicAuthPassword = process.env.PASSWORD;
 
 const openApiMiddleWare = apiSpec => {
   return OpenApiValidator.middleware({
@@ -11,9 +13,12 @@ const openApiMiddleWare = apiSpec => {
           const authHeader = req?.headers?.authorization;
           try {
             if (authHeader?.startsWith?.('Basic ')) {
-              let isValid = true;
-              // TODO
-              // Validate auth header
+              const base64Credentials =  req.headers.authorization.split(' ')[1];
+              const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
+              const [username, password] = credentials.split(':');
+
+              let isValid = username === basicAuthUsername && password === basicAuthPassword ? true : false;
+
               return Promise.resolve(isValid);
             }
           } catch (err) {
