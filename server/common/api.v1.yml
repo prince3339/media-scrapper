@@ -1,0 +1,134 @@
+openapi: 3.0.1
+info:
+  title: Media Scrapper
+  description: |
+    # Introduction
+    NodeJS scrapper to sca=rape image and video source urls
+  version: '1'
+  x-logo:
+    url: 'https://avatars2.githubusercontent.com/u/18652502?s=280&v=4'
+  contact:
+    email: sabbirprince39@gmail.com
+servers:
+  - url: http://localhost:3000/api/v1
+    description: local
+tags:
+  - name: scrape-media
+    x-displayName: Media scrape API
+    description: Endpoints to work with scrape api.
+  - name: error_model
+    x-displayName: Error Model
+    description: |
+      Errors responses are returned in the format below.
+      <SchemaDefinition schemaRef="#/components/schemas/Error" />
+x-tagGroups:
+  - name: API
+    tags:
+      - scrape-media
+  - name: Models
+    tags:
+      - error_model
+paths:
+  /media/scrape:
+    post:
+      tags:
+        - scrape-media
+      summary: Scrape media api
+      operationId: scrapeMedia
+      description: Scrape media api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                urls:
+                  type: array
+                  items:
+                    type: string
+                    format: uri
+        required: true
+      security:
+        - basicAuth: []
+      responses:
+        201:
+          description: Scrapped media response
+          content:
+            application/json:
+              schema:
+                type: object
+
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /spec:
+    get:
+      tags:
+        - 'spec'
+      summary: Redoc OpenAPI
+      description: Renders OpenAPI specs.
+      responses:
+        200:
+          description: Renders OpenAPI specs.
+          content: {}
+  /spec/raw:
+    get:
+      tags:
+        - 'spec'
+      summary: OpenAPI spec
+      description: Returns raw OpenAPI specs.
+      responses:
+        200:
+          description: Return the API specification
+          content: {}
+
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+        - 'code'
+        - 'message'
+        - 'timestamp'
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: bad.request
+        message:
+          type: string
+          description: Human readable message
+          example: request.query.limit should be <= 100
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of the error
+          example: 2021-08-13T06:00:00Z
+        detail:
+          type: array
+          description: A list of child errors. Only applicable to 400 bad.request
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Child error code
+                example: null.value
+              path:
+                type: string
+                description: path of bad request field
+                example: .query.limit
+              message:
+                type: string
+                description: Human readable message
+                example: should be <= 100
+
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+

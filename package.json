@@ -1,11 +1,74 @@
 {
-  "name": "scrapper",
+  "name": "media-scrapper",
   "version": "1.0.0",
-  "description": "NodeJS image & video url scrapper",
+  "description": "NodeJS scrapper to sca=rape image and video source urls",
   "main": "index.js",
+  "author": "Sabbir Ahmed Siddiquee (sabbirprince39@gmail)",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node dist/index.js",
+    "compile": "babel server --out-dir dist --delete-dir-on-start --source-maps inline --copy-files --ignore 'server/**/*.test.js' --no-copy-ignored",
+    "dev": "nodemon --unhandled-rejections=strict server --exec babel-node --config .nodemonrc.json | pino-pretty",
+    "dev:debug": "nodemon server --exec babel-node --config .nodemonrc.json --inspect | pino-pretty"
   },
-  "author": "sabbirprince39@gmail.com",
-  "license": "ISC"
+  "lint-staged": {
+    "*.js": [
+      "eslint . --fix",
+      "git add",
+      "jest --forceExit —-findRelatedTests --passWithNoTests --maxWorkers=2"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-openapi-validator": "^4.12.15",
+    "express-pino-logger": "^6.0.0",
+    "express-validator": "^6.12.1",
+    "faker": "^5.5.3",
+    "http-status-codes": "^2.1.4",
+    "ip": "^1.1.5",
+    "lodash": "^4.17.21",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "pg": "^8.7.1",
+    "pg-connection-string": "^2.5.0",
+    "pg-hstore": "^2.3.4",
+    "pino": "^6.13.0",
+    "redoc-express": "^1.0.0",
+    "sequelize": "^6.6.5",
+    "sequelize-cli": "^6.2.0",
+    "sequelize-mock": "^0.10.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.8",
+    "@babel/core": "^7.15.0",
+    "@babel/node": "^7.14.9",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.14.5",
+    "@babel/plugin-proposal-optional-chaining": "^7.14.5",
+    "@babel/preset-env": "^7.15.0",
+    "@babel/register": "^7.15.3",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.24.0",
+    "eslint-plugin-jest": "^24.4.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "husky": "^7.0.1",
+    "jest": "^27.0.6",
+    "lint-staged": "^11.1.2",
+    "nodemon": "^2.0.12",
+    "pino-pretty": "^5.1.3",
+    "prettier": "^2.3.2"
+  }
 }

@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "test/": ["test"],
+      "server/*": ["server/*"]
+    },
+    "moduleResolution": "node"
+  },
+  "exclude": ["dist", "node_modules"]
+}
