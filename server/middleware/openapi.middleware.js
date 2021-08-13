@@ -1,23 +1,29 @@
 const OpenApiValidator = require('express-openapi-validator');
+
 const basicAuthUsername = process.env.USERNAME;
 const basicAuthPassword = process.env.PASSWORD;
 
-const openApiMiddleWare = apiSpec => {
-  return OpenApiValidator.middleware({
+const openApiMiddleWare = apiSpec =>
+  OpenApiValidator.middleware({
     apiSpec,
     validateRequests: true,
     validateResponses: true,
     validateSecurity: {
       handlers: {
-        async basicAuth(req, scopes) {
+        async basicAuth(req) {
           const authHeader = req?.headers?.authorization;
           try {
             if (authHeader?.startsWith?.('Basic ')) {
-              const base64Credentials =  req.headers.authorization.split(' ')[1];
-              const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
+              const base64Credentials = req.headers.authorization.split(' ')[1];
+              const credentials = Buffer.from(
+                base64Credentials,
+                'base64'
+              ).toString('ascii');
               const [username, password] = credentials.split(':');
 
-              let isValid = username === basicAuthUsername && password === basicAuthPassword ? true : false;
+              const isValid = !!(
+                username === basicAuthUsername && password === basicAuthPassword
+              );
 
               return Promise.resolve(isValid);
             }
@@ -29,6 +35,5 @@ const openApiMiddleWare = apiSpec => {
       }
     }
   });
-};
 
 export default openApiMiddleWare;
