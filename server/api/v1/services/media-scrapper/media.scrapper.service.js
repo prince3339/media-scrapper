@@ -1,6 +1,4 @@
 import logger from 'server/common/logger';
-import ErrorResponse from 'server/common/error.response';
-import { StatusCodes } from 'http-status-codes';
 import Cheerio from 'cheerio';
 import axios from 'axios';
 import models from 'server/models';
@@ -15,27 +13,43 @@ class MediaScrapperService {
       const promises = [];
       const mediaData = [];
       urls.forEach(async url => {
-        promises.push(axios.get(url));
+        promises.push(
+          axios.get(url, { headers: { 'Content-Type': 'text/html' } })
+        );
       });
 
       const contents = await Promise.all(promises);
       contents.forEach((content, index) => {
         const $ = Cheerio.load(content.data);
-        $('img').each((mediaIndex, image) => {
+        $('img').each((_, image) => {
           const media = {
-            title: $(image).attr('alt'),
+            title: $(image).attr('alt') || $(image).attr('src'),
             mediaUrl: $(image).attr('src'),
             webUrl: urls[index],
             type: 'IMAGE'
           };
-          mediaData.push(media);
-          console.log(media);
+          if ($(image).attr('src')) {
+            mediaData.push(media);
+          }
+        });
+        $('video').each((_, video) => {
+          const media = {
+            title: $(video).attr('src') || video.children[0]?.attr?.('src'),
+            mediaUrl: $(video).attr('src') || video.children[0]?.attr?.('src'),
+            webUrl: urls[index],
+            type: 'VIDEO'
+          };
+          if ($(video).attr('src') || video.children[0]?.attr?.('src')) {
+            mediaData.push(media);
+          }
         });
       });
 
-      await Media.bulkCreate(mediaData, {
-        returning: true
-      });
+      if (mediaData.length) {
+        await Media.bulkCreate(mediaData, {
+          returning: true
+        });
+      }
 
       return Promise.resolve(mediaData);
     } catch (err) {
