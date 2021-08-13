@@ -7,7 +7,7 @@ import errorHandler from './common/error.handler';
 
 function routesV1(app) {
   app.use('/api/v1/spec', specsV1Router);
-  app.use('/api/v1/media', mediaV1Router);
+  app.use('/api/v1/medias', mediaV1Router);
   app.use(errorHandler);
 }
 
