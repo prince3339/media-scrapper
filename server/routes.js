@@ -1,10 +1,12 @@
 import * as path from 'path';
 import specsV1Router from './api/v1/controllers/specs/router';
 import mediaV1Router from './api/v1/controllers/media/router';
+import errorHandler from './common/error.handler';
 
 function routesV1(app) {
   app.use('/api/v1/spec', specsV1Router);
   app.use('/api/v1/media', mediaV1Router);
+  app.use(errorHandler);
 }
 
 function routesv(app, v) {
