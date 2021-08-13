@@ -8,7 +8,12 @@
     "start": "node dist/index.js",
     "compile": "babel server --out-dir dist --delete-dir-on-start --source-maps inline --copy-files --ignore 'server/**/*.test.js' --no-copy-ignored",
     "dev": "nodemon --unhandled-rejections=strict server --exec babel-node --config .nodemonrc.json | pino-pretty",
-    "dev:debug": "nodemon server --exec babel-node --config .nodemonrc.json --inspect | pino-pretty"
+    "dev:debug": "nodemon server --exec babel-node --config .nodemonrc.json --inspect | pino-pretty",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "migrations": "node ./node_modules/sequelize-cli/lib/sequelize db:migrate",
+    "migrations:undo": "node ./node_modules/sequelize-cli/lib/sequelize db:migrate:undo",
+    "migrations:undo-all": "node ./node_modules/sequelize-cli/lib/sequelize db:migrate:undo:all"
   },
   "lint-staged": {
     "*.js": [
@@ -25,6 +30,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
+    "cheerio": "^1.0.0-rc.10",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",

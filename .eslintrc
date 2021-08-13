@@ -1,0 +1,53 @@
+{
+    "parser": "babel-eslint",
+    "extends": ["eslint-config-airbnb-base", "prettier"],
+    "env": {
+      "mocha": true,
+      "jest/globals": true
+    },
+    "plugins": ["prettier", "jest"],
+    "settings": {
+      "import/resolver": {
+        "alias": {
+          "map": [
+            ["test", "./test"],
+            ["server", "./server"]
+          ],
+          "extensions": [".js", ".json", ".yml"]
+        }
+      }
+    },
+    "rules": {
+      "node/no-unsupported-features/es-syntax": 0,
+      "import/prefer-default-export": 0,
+      "no-underscore-dangle": 0,
+      "function-paren-newline": 0,
+      "comma-dangle": 0,
+      "arrow-parens": 0,
+      "import/extensions": 0,
+      "no-unused-vars": "warn",
+      "max-len": "warn",
+      "no-trailing-spaces": "warn",
+      "quotes": "warn",
+      "object-shorthand": "warn",
+      "indent": "warn",
+      "padded-blocks": "warn",
+      "no-mixed-operators": "warn",
+      "import/no-cycle": "off",
+      "class-methods-use-this": "off",
+      "no-console": "off",
+      "camelcase": "off",
+      "import/no-dynamic-require": "off",
+      "prettier/prettier": [
+        "error",
+        {
+          "singleQuote": true,
+          "trailingComma": "none",
+          "bracketSpacing": true,
+          "jsxBracketSameLine": true,
+          "arrowParens": "avoid"
+        }
+      ]
+    }
+  }
+  
