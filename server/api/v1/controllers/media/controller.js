@@ -4,24 +4,15 @@ import { StatusCodes } from 'http-status-codes';
 
 export class Controller {
   scrapeMedia(req, res, next) {
-    logger.info(
-      { request: req.body },
-      `Media scrapper Request initiated`
-    );
+    logger.info({ request: req.body }, 'Media scrapper Request initiated');
 
     MediaScrapperService.scrapeMedia(req, res, next).then(
       r => {
-        logger.info(
-          { response: r },
-          `Media scrapper response`
-        );
-        return res.status(StatusCodes.CREATED).json({});
+        logger.info({ response: r }, 'Media scrapper response');
+        return res.status(StatusCodes.CREATED).json(r);
       },
       err => {
-        logger.error(
-          { error: err.message },
-          `Media scrapper error`
-        );
+        logger.error({ error: err.message }, 'Media scrapper error');
         return next(err);
       }
     );

@@ -1,7 +1,4 @@
 import * as express from 'express';
 import controller from './controller';
 
-export default express
-  .Router()
-  .post('/scrape', controller.scrapeMedia)
-  
+export default express.Router().post('/scrape', controller.scrapeMedia);

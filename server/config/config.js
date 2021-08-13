@@ -9,27 +9,27 @@ module.exports = {
     password,
     database,
     host,
-    dialect: 'postgres',
+    dialect: 'postgres'
   },
   test: {
     username,
     password,
     database,
     host,
-    dialect: 'postgres',
+    dialect: 'postgres'
   },
   staging: {
     username,
     password,
     database,
     host,
-    dialect: 'postgres',
+    dialect: 'postgres'
   },
   production: {
     username,
     password,
     database,
     host,
-    dialect: 'postgres',
+    dialect: 'postgres'
   }
 };

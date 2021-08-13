@@ -1,4 +1,3 @@
-import dns from 'dns';
 import sequelizeModel from 'server/models/index';
 
 const { sequelize } = sequelizeModel;
