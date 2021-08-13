@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as bodyParser from 'body-parser';
 import * as http from 'http';
 import * as os from 'os';
+import expressPino from 'express-pino-logger';
 import cors from 'cors';
 import l from './common/logger';
 import { routes } from './routes';
@@ -10,7 +11,21 @@ import sequelizeModel from './models/index';
 
 const { sequelize } = sequelizeModel;
 
+const expressLogger = expressPino({
+  autoLogging: {
+    ignorePaths: ['/api/health'],
+    getPath: req => {
+      if (req.url === '/api/health') {
+        return '/api/health';
+      }
+      return req.url;
+    }
+  },
+  logger: l
+});
+
 const app = Express();
+app.use(expressLogger);
 
 export default class ExpressServer {
   constructor() {
