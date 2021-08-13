@@ -6,9 +6,9 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4
       },
-      title: Sequelize.STRING,
-      mediaUrl: Sequelize.STRING,
-      webUrl: Sequelize.STRING,
+      title: Sequelize.STRING(1000),
+      mediaUrl: Sequelize.STRING(2048),
+      webUrl: Sequelize.STRING(2048),
       type: {
         type: Sequelize.ENUM({
           values: ['IMAGE', 'VIDEO']
