@@ -1,4 +1,5 @@
 import * as path from 'path';
+import healthRouter from './common/health/router';
 import specsV1Router from './api/v1/controllers/specs/router';
 import mediaV1Router from './api/v1/controllers/media/router';
 import openApiMiddleWare from './middleware/openapi.middleware';
@@ -12,6 +13,8 @@ function routesV1(app) {
 
 function routesv(app, v) {
   // common routes
+  app.use('/api/health', healthRouter);
+
   if (v === 1) routesV1(app);
 }
 
