@@ -25,6 +25,29 @@ npm run dev
 npm run test
 ```
 
+## Add environment variabls
+
+Create a .env file and paste and edit the bellow variables as per the Backaned requirements
+
+```bash
+ENV=development
+PORT=4000
+REQUEST_LIMIT=100kb
+
+# Database
+# Local DB
+DB_URL=postgresql://username:password@localhost:5432/Momos
+DB_SCHEMA=boilerplate
+DB_DIALECT=postgres
+
+#Basic Auth
+USERNAME=Sabbir
+PASSWORD=Sabbir
+
+ALLOWED_ORIGINS=http://localhost:3000
+
+```
+
 ## Install Dependencies
 
 Install all package dependencies (one time operation)
