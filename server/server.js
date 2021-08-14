@@ -47,8 +47,21 @@ export default class ExpressServer {
 
   // eslint-disable-next-line class-methods-use-this
   async listen(port = process.env.PORT) {
+    const allowlist = process.env.ALLOWED_ORIGINS?.split(',') || [];
+    const corsOptionsDelegate = {
+      origin: (origin, callback) => {
+        if (allowlist.indexOf(origin) !== -1) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      }
+    };
+
+    app.use(
+      cors(process.env.ENV === 'development' ? null : corsOptionsDelegate)
+    );
     routes(app);
-    app.options('*', cors());
 
     const welcome = p => () =>
       l.info(
