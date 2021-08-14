@@ -14,6 +14,14 @@ module.exports = {
           values: ['IMAGE', 'VIDEO']
         }),
         allowNull: false
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+        allowNull: false
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+        allowNull: false
       }
     });
   },

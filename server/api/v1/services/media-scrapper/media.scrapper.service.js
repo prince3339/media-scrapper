@@ -3,6 +3,8 @@ import Cheerio from 'cheerio';
 import axios from 'axios';
 import models from 'server/models';
 
+const { Op } = require('sequelize');
+
 const { Media } = models;
 
 class MediaScrapperService {
@@ -52,6 +54,42 @@ class MediaScrapperService {
       }
 
       return Promise.resolve(mediaData);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+
+  async getMediaList(type, searchText, offset, limit, sort) {
+    try {
+      const clause = {
+        ...(searchText && {
+          [Op.or]: {
+            title: {
+              [Op.substring]: searchText
+            },
+            mediaUrl: {
+              [Op.substring]: searchText
+            }
+          }
+        })
+      };
+
+      if (type) {
+        clause.type = type;
+      }
+
+      const items = await Media.findAndCountAll({
+        where: clause,
+        offset,
+        limit,
+        order: [['createdAt', 'DESC']]
+      });
+
+      return {
+        success: true,
+        count: items.count,
+        rows: items.rows
+      };
     } catch (err) {
       return Promise.reject(err);
     }

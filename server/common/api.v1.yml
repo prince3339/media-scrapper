@@ -16,6 +16,9 @@ tags:
   - name: scrape-media
     x-displayName: Media scrape API
     description: Endpoints to work with scrape api.
+  - name: get-medias
+    x-displayName: Media list API
+    description: Endpoints to work with media list api.
   - name: error_model
     x-displayName: Error Model
     description: |
@@ -24,11 +27,83 @@ tags:
 x-tagGroups:
   - name: API
     tags:
+      - get-medias
       - scrape-media
   - name: Models
     tags:
       - error_model
 paths:
+  /medias:
+    get:
+      tags:
+        - get-medias
+      summary: Get media info
+      operationId: getMedias
+      description: Get media info API
+      parameters:
+        - in: query
+          name: type
+          schema:
+            type: string
+            enum:
+              - IMAGE
+              - VIDEO
+          description: media type
+
+        - in: query
+          name: searchText
+          schema:
+            type: string
+          description: Media search text
+        
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            default: 0
+          description: offset value to be used for a collection
+
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 10
+          description: The number of items to return in a collection
+      security:
+        - basicAuth: []
+      responses:
+        200:
+          description: Collection of media objects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metadata:
+                    type: object
+                    $ref: '#/components/schemas/Metadata'
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        title:
+                          type: string
+                        type:
+                          type: string
+                          enum:
+                            - IMAGE
+                            - VIDEO
+                        mediaUrl:
+                          type: string
+                          format: uri
+                        webUrl:
+                          type: string
+                          format: uri
+      
   /medias/scrape:
     post:
       tags:
@@ -60,6 +135,22 @@ paths:
             application/json:
               schema:
                 type: array
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    type:
+                      type: string
+                      enum:
+                        - IMAGE
+                        - VIDEO
+                    mediaUrl:
+                      type: string
+                      format: uri
+                    webUrl:
+                      type: string
+                      format: uri
 
         default:
           description: Unexpected error
@@ -91,6 +182,49 @@ paths:
 
 components:
   schemas:
+    Metadata:
+      type: object
+      required:
+        - pagination
+      properties:
+        pagination:
+          type: object
+          required:
+            - offset
+            - limit
+            - previousOffset
+            - nextOffset
+            - currentPage
+            - pageCount
+            - totalCount
+          properties:
+            offset:
+              type: integer
+              default: 0
+
+            limit: 
+              type: integer
+              default: 10
+
+            previousOffset:
+              type: integer
+              nullable: true
+
+            nextOffset:
+              type: integer
+              default: null
+
+            currentPage:
+              type: integer
+              default: null
+
+            pageCount: 
+              type: integer
+              default: 1
+
+            totalCount:
+              type: integer
+              default: 0   
     Error:
       type: object
       required:
