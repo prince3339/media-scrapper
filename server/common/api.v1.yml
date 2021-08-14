@@ -52,6 +52,7 @@ paths:
 
         - in: query
           name: searchText
+          allowEmptyValue: true
           schema:
             type: string
           description: Media search text
